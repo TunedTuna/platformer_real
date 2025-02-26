@@ -164,7 +164,7 @@ public class GameManager : MonoBehaviour
         questionObj.position = originalPosition;
     }
 
-    void updateScore()
+    public void updateScore()
     {
         score += 100;
         string tempScore = score.ToString("D8");
@@ -199,9 +199,12 @@ public class GameManager : MonoBehaviour
     public void breakBrick()
     {
         //should have a paramter that is passed to destroy correct object
-        Debug.Log("ouch!");
-        Destroy(gameObject);
-        updateScore();
+       
+            Debug.Log("ouch!");
+            
+            updateScore();
+        
+
     }
     public void exhaustQuestion(Transform xx)
     {

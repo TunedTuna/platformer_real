@@ -19,12 +19,13 @@ public class CharacterController2025 : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         show = false;
-        manager = GetComponent<GameManager>();
+       
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         float horizontalAmount = Input.GetAxis("Horizontal");
         rb.linearVelocity += Vector3.right * (horizontalAmount * Time.deltaTime * acceleration);
 
@@ -39,29 +40,40 @@ public class CharacterController2025 : MonoBehaviour
 
         Collider c = GetComponent<Collider>();
         Vector3 startPoint = transform.position;
+        //feet======================================================================================================
         float castDistance = c.bounds.extents.y;
 
         isGrounded = Physics.Raycast(startPoint, Vector3.down, castDistance);
 
         Color color = (isGrounded) ? Color.green : Color.red;
-        if ((!show))
-        {
             
-            Debug.DrawLine(startPoint, startPoint + castDistance * Vector3.down, color, 0f, false);
-        }
+        Debug.DrawLine(startPoint, startPoint + castDistance * Vector3.down, color, 0f, false);
+      
 
 
-        //head
-        Vector3 top= transform.position + new Vector3(0, c.bounds.extents.y, 0);
-        if (!show) 
+        //head======================================================================================================
+        Vector3 top = transform.position + new Vector3(0, c.bounds.extents.y, 0);
+
+        
+        headButt = Physics.Raycast(top, Vector3.up,out RaycastHit headHit, castDistance);
+        Color color2 = (headButt) ? Color.yellow : Color.blue;
+        Debug.DrawLine(top, top + castDistance * Vector3.up, color2, 0f, false);
+
+
+
+        if (headButt )
         {
-            headButt = Physics.Raycast(top, Vector3.up, castDistance);
-            Color color2 = (headButt) ? Color.yellow : Color.blue;
-            Debug.DrawLine(top, top + castDistance * Vector3.up, color2, 0f, false);
+
+            GameObject brick = headHit.transform.gameObject;
+            manager.breakBrick();
+            brick.SetActive(false);
+            manager.updateScore();
+            //Debug.Log("Break!");
+            //Debug.Log(brick);
         }
 
 
-
+        //inputs======================================================================================================
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             //apply force upward
