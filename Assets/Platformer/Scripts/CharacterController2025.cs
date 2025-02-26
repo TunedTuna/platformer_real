@@ -1,3 +1,5 @@
+using System.Collections;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class CharacterController2025 : MonoBehaviour
@@ -15,6 +17,8 @@ public class CharacterController2025 : MonoBehaviour
     public bool isGrounded;
     public bool headButt;
     public bool show;
+    private bool isTriggered = false;
+    private bool canRaycast = true;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -60,17 +64,32 @@ public class CharacterController2025 : MonoBehaviour
         Debug.DrawLine(top, top + castDistance * Vector3.up, color2, 0f, false);
 
 
+            if (headButt && !isGrounded && headHit.transform.gameObject.CompareTag("Brick"))
+            {
 
-        if (headButt )
-        {
+                GameObject block = headHit.transform.gameObject;
+                manager.breakBrick(block);
 
-            GameObject brick = headHit.transform.gameObject;
-            manager.breakBrick();
-            brick.SetActive(false);
-            manager.updateScore();
-            //Debug.Log("Break!");
-            //Debug.Log(brick);
-        }
+                //Debug.Log("Break!");
+                //Debug.Log(brick);
+            }
+            if (headButt && !isGrounded && headHit.transform.gameObject.CompareTag("Question") && !isTriggered && canRaycast)
+            {
+
+                GameObject block = headHit.transform.gameObject;
+                manager.exhaustQuestion(block.transform);
+                StartCoroutine(ResetTriggerAfterDelay(0.5f));
+                isTriggered = true;
+                canRaycast = false;
+
+                //Debug.Log("Break!");
+                //Debug.Log(brick);
+            }
+        
+           
+        
+        
+
 
 
         //inputs======================================================================================================
@@ -102,5 +121,16 @@ public class CharacterController2025 : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, yawRotation, 0f);
             transform.rotation = rotation;
         }
+    }
+
+    IEnumerator ResetTriggerAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // Reset the flag to allow future triggers
+        isTriggered = false;
+
+        // Optionally, you can also re-enable the raycast here if needed
+        canRaycast = true;
     }
 }

@@ -21,6 +21,9 @@ public class GameManager : MonoBehaviour
     public bool winner;    //win
     private int doneTime;
 
+    public bool man_canRay;
+    public bool man_triggered;
+
     private LevelParser levelParser;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -162,6 +165,8 @@ public class GameManager : MonoBehaviour
 
         
         questionObj.position = originalPosition;
+        man_triggered = false;
+        man_canRay = true;
     }
 
     public void updateScore()
@@ -196,12 +201,12 @@ public class GameManager : MonoBehaviour
         Destroy(thisOne);
         updateScore();
     }
-    public void breakBrick()
+    public void breakBrick(GameObject obj)
     {
         //should have a paramter that is passed to destroy correct object
        
             Debug.Log("ouch!");
-            
+            obj.SetActive(false);
             updateScore();
         
 
