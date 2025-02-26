@@ -94,15 +94,15 @@ public class GameManager : MonoBehaviour
 
             bool rayHitSomething = Physics.Raycast(cursorRay,out RaycastHit hitInfo);
 
-            if (rayHitSomething && hitInfo.transform.gameObject.CompareTag("Brick")) 
+            if (rayHitSomething && hitInfo.transform.gameObject.CompareTag("Brick"))
             {
                 Debug.Log("ouch!");
                 Destroy(hitInfo.transform.gameObject);
                 updateScore();
-                
+
 
             }
-            if(rayHitSomething && hitInfo.transform.gameObject.CompareTag("Question"))
+            if (rayHitSomething && hitInfo.transform.gameObject.CompareTag("Question"))
             {
                 coins++;
                 Debug.Log("ding!");
@@ -194,6 +194,23 @@ public class GameManager : MonoBehaviour
         Debug.Log("ding!");
         coinTracker.text = $"\nx{coins}";
         Destroy(thisOne);
+        updateScore();
+    }
+    public void breakBrick()
+    {
+        //should have a paramter that is passed to destroy correct object
+        Debug.Log("ouch!");
+        Destroy(gameObject);
+        updateScore();
+    }
+    public void exhaustQuestion(Transform xx)
+    {
+        //should have a paramter that is passed to destroy correct object
+        //use same info for animation
+        coins++;
+        Debug.Log("ding!");
+        StartCoroutine(questionAnimation(xx.transform));
+        coinTracker.text = $"\nx{coins}";
         updateScore();
     }
 
