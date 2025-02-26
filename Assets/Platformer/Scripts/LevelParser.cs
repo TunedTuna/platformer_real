@@ -43,6 +43,7 @@ public class LevelParser : MonoBehaviour
     public GameObject questionBoxPrefab;
     public GameObject stonePrefab;
     public GameObject waterPrefab;
+    public GameObject goalPrefab;
     public GameObject spawnLocPrefab;
     public Transform spawnTransform;
     public GameObject spawnLoc;
@@ -135,6 +136,12 @@ public class LevelParser : MonoBehaviour
                     spawnLoc  = Instantiate(spawnLocPrefab, environmentRoot);
                     spawnLoc.transform.position = pos;
 
+                }
+                if (letters[col] == 'g')
+                {
+                    Vector3 pos = new Vector3(col, row, 0f);
+                    GameObject newObj = Instantiate(goalPrefab, environmentRoot);
+                    newObj.transform.position = pos;
                 }
 
             }
