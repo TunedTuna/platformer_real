@@ -9,6 +9,7 @@ TagManager:
   - Dirt
   - Stone
   - Water
+  - Coin
   layers:
   - Default
   - TransparentFX

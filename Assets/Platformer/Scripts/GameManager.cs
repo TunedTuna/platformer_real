@@ -1,5 +1,6 @@
 using System.Collections;
 using TMPro;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,13 +8,18 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI coinTracker;
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI fin;
     public Camera cam;
     public Transform debugCubeTransform;
     public GameObject player;
     public Transform spawnLocation;
     private int coins;
     private int score;
-    private bool gameOver;
+
+    private bool done;  //stop update from repeating
+    private bool gameOver; //lose
+    public bool winner;    //win
+    private int doneTime;
 
     private LevelParser levelParser;
 
@@ -23,6 +29,9 @@ public class GameManager : MonoBehaviour
         coins = 0;
         score = 0;
         gameOver = false;
+        winner = false;
+        done = false;
+        fin.enabled = false;
 
     }
 
@@ -31,22 +40,50 @@ public class GameManager : MonoBehaviour
     {
         int timeLeft= 100-(int)(Time.time);
 
-        if(timeLeft > 0)
+        if (timeLeft > 0 && !gameOver && !winner)//alive n not dead
         {
             timerText.text = $"Time:{timeLeft}";
         }
-        else
+        else if (timeLeft<=0|| gameOver)//outta time or died
         {
-            timerText.text = $"Time:000";
-            if (!gameOver)
+            
+            fin.enabled = true;
+            if (!done)
             {
                 //disable player
                 player.SetActive(false);
                 Debug.Log("GameOver!");
+                if (gameOver) 
+                {
+                    doneTime = timeLeft;
+                    fin.text = "Game Over!";
+
+                }
+                else
+                {
+                    fin.text ="Outta time! Game over.";
+                }
+
                 gameOver = true;
+                done = true;
+                timerText.text = $"Time:{timeLeft}";
+
             }
 
 
+        }
+        else if (winner) //ya won
+        {
+            if (!done)
+            {
+
+                doneTime=timeLeft ;
+                done = true ;
+                fin.text = "Winner winner chicken dinner!";
+                fin.enabled = true;
+            }
+            
+            timerText.text = $"Time:{doneTime}";
         }
       
 
@@ -75,10 +112,27 @@ public class GameManager : MonoBehaviour
             }
             if(rayHitSomething && hitInfo.transform.gameObject.CompareTag("Water"))
             {
+                
                 player.SetActive(false);
                 Debug.Log("Oops!");
                 gameOver = true;
             }
+            //if (rayHitSomething && hitInfo.transform.gameObject.CompareTag("Coin")) //edited for CoinRules
+            //{
+            //    coins++;
+            //    Debug.Log("ding!");
+            //    coinTracker.text = $"\nx{coins}";
+            //    Destroy(hitInfo.transform.gameObject);
+            //    updateScore();
+
+            //}
+            //if (rayHitSomething && hitInfo.transform.gameObject.CompareTag("Goal")) //moved to GoalRules
+            //{
+            //    winner = true;
+            //    player.SetActive(false);
+            //    Debug.Log("Yippie!");
+            //}
+
 
         }
 
@@ -129,7 +183,18 @@ public class GameManager : MonoBehaviour
         scoreText.text = $"Score\n{tempScore}";
         coinTracker.text = $"\nx{coins}";
         gameOver = false;
-
+        winner = false;
+        done = false;
 
     }
+
+    public void updateCoin(GameObject thisOne)
+    {
+        coins++;
+        Debug.Log("ding!");
+        coinTracker.text = $"\nx{coins}";
+        Destroy(thisOne);
+        updateScore();
+    }
+
 }

@@ -542,6 +542,8 @@ MonoBehaviour:
   questionBoxPrefab: {fileID: 5606894444052634920, guid: 755420b83c717284cbdb6027bf05b598, type: 3}
   stonePrefab: {fileID: 1376718870116336568, guid: 41f46b6e93ab0bf4c86319c7cd46c9a0, type: 3}
   waterPrefab: {fileID: 8142617512213707224, guid: 268c60db3c2841040a8ae5b0aa69bc9d, type: 3}
+  goalPrefab: {fileID: 6174385651566988770, guid: 73655b5933fbda147ac681126623d640, type: 3}
+  coinPrefab: {fileID: 8142617512213707224, guid: 00da29e8407639f43863fb6d8986c4ee, type: 3}
   spawnLocPrefab: {fileID: 7873942162479834666, guid: 3ba307eec3dcb5147b4a840d782776af, type: 3}
   spawnTransform: {fileID: 0}
   spawnLoc: {fileID: 0}

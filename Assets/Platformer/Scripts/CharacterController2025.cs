@@ -42,7 +42,7 @@ public class CharacterController2025 : MonoBehaviour
         Debug.DrawLine(startPoint, startPoint + castDistance * Vector3.down, color, 0f, false);
 
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             //apply force upward
 

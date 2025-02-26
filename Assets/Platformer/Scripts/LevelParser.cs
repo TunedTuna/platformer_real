@@ -44,6 +44,7 @@ public class LevelParser : MonoBehaviour
     public GameObject stonePrefab;
     public GameObject waterPrefab;
     public GameObject goalPrefab;
+    public GameObject coinPrefab;
     public GameObject spawnLocPrefab;
     public Transform spawnTransform;
     public GameObject spawnLoc;
@@ -143,6 +144,13 @@ public class LevelParser : MonoBehaviour
                     GameObject newObj = Instantiate(goalPrefab, environmentRoot);
                     newObj.transform.position = pos;
                 }
+                if (letters[col] == 'c')
+                {
+                    Vector3 pos = new Vector3(col, row, 0f);
+                    GameObject newObj = Instantiate(coinPrefab, environmentRoot);
+                    newObj.transform.position = pos;
+                }
+
 
             }
             row++;
