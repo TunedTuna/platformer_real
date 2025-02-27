@@ -21,8 +21,7 @@ public class GameManager : MonoBehaviour
     public bool winner;    //win
     private int doneTime;
 
-    public bool man_canRay;
-    public bool man_triggered;
+    public float tempTime;
 
     private LevelParser levelParser;
 
@@ -35,13 +34,14 @@ public class GameManager : MonoBehaviour
         winner = false;
         done = false;
         fin.enabled = false;
+        tempTime = Time.time;
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        int timeLeft= 100-(int)(Time.time);
+        int timeLeft= 100-(int)(Time.time- tempTime);
 
         if (timeLeft > 0 && !gameOver && !winner)//alive n not dead
         {
@@ -59,12 +59,12 @@ public class GameManager : MonoBehaviour
                 if (gameOver) 
                 {
                     doneTime = timeLeft;
-                    fin.text = "Game Over!";
+                    fin.text = "Game Over!\nPress 'R' to restart";
 
                 }
                 else
                 {
-                    fin.text ="Outta time! Game over.";
+                    fin.text = "Outta time! Game over.\nPress 'R' to restart";
                 }
 
                 gameOver = true;
@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
                 doneTime=timeLeft ;
                 done = true ;
-                fin.text = "Winner winner chicken dinner!";
+                fin.text = "Winner winner chicken dinner!\nPress 'R' to restart";
                 fin.enabled = true;
             }
             
@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R) && !player.activeSelf)
         {
             resetLevel();
+            tempTime = Time.time;
         }
     }
 
@@ -165,9 +166,8 @@ public class GameManager : MonoBehaviour
 
         
         questionObj.position = originalPosition;
-        man_triggered = false;
-        man_canRay = true;
     }
+
 
     public void updateScore()
     {
@@ -190,6 +190,7 @@ public class GameManager : MonoBehaviour
         gameOver = false;
         winner = false;
         done = false;
+        fin.enabled = false;
 
     }
 
@@ -220,6 +221,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(questionAnimation(xx.transform));
         coinTracker.text = $"\nx{coins}";
         updateScore();
+    }
+    public void setGameOver()
+    {
+        player.SetActive(false);
+        gameOver = true;
+
     }
 
 }

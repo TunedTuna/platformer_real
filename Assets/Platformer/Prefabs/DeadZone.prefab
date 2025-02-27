@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 5280471833719021679}
   - component: {fileID: 1308427975222050888}
   - component: {fileID: 3171428037445625160}
-  - component: {fileID: 6577744714404636683}
+  - component: {fileID: 4047208736174971984}
   m_Layer: 0
-  m_Name: Water
-  m_TagString: Water
+  m_Name: DeadZone
+  m_TagString: DeadZone
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8142617512213707224}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -109,7 +109,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6577744714404636683
+--- !u!114 &4047208736174971984
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

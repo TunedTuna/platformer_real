@@ -8,8 +8,10 @@ public class CharacterController2025 : MonoBehaviour
     public float acceleration = 10f;
     public float maxSpeed = 10f;
     public float jumpImpulse = 8f;
-
     public float jumpBoostForce = 8f;
+
+
+    
 
     public GameManager manager;
 
@@ -19,10 +21,15 @@ public class CharacterController2025 : MonoBehaviour
     public bool show;
     private bool isTriggered = false;
     private bool canRaycast = true;
+    private float test;
+    private float lastGroundedY;
+
+    Animator animator;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         show = false;
+        animator = GetComponent<Animator>();
        
     }
 
@@ -41,6 +48,10 @@ public class CharacterController2025 : MonoBehaviour
 
         rb.linearVelocity = newVelocity;
         //also clamp vertical velocity
+        float verticalSpeed= rb.linearVelocity.y;
+        verticalSpeed = Mathf.Clamp(verticalSpeed, -maxSpeed, jumpImpulse);
+        newVelocity.y = verticalSpeed;
+        rb.linearVelocity= newVelocity;
 
         Collider c = GetComponent<Collider>();
         Vector3 startPoint = transform.position;
@@ -52,6 +63,8 @@ public class CharacterController2025 : MonoBehaviour
         Color color = (isGrounded) ? Color.green : Color.red;
             
         Debug.DrawLine(startPoint, startPoint + castDistance * Vector3.down, color, 0f, false);
+
+
       
 
 
@@ -85,14 +98,11 @@ public class CharacterController2025 : MonoBehaviour
                 //Debug.Log("Break!");
                 //Debug.Log(brick);
             }
-        
-           
-        
-        
 
 
-
+        test = 0;
         //inputs======================================================================================================
+        //jumpin
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             //apply force upward
@@ -103,12 +113,26 @@ public class CharacterController2025 : MonoBehaviour
 
         else if (Input.GetKey(KeyCode.Space) && !isGrounded)
         {
-            if(rb.linearVelocity.y>0)
+            //TODO: if holding down jump, increment number up  to max Jump impule, else 
+
+            //class code
+            if (rb.linearVelocity.y > 0)
             {
-            rb.AddForce(Vector3.up * jumpBoostForce, ForceMode.Acceleration);
+                test += Time.deltaTime;
+                Debug.Log($"test:{test}");
+                rb.AddForce(Vector3.up * jumpBoostForce, ForceMode.Acceleration);
+            }
+        }
+        else if (Input.GetKeyUp(KeyCode.Space) && !isGrounded)
+        {
+            if (rb.linearVelocity.y > 0)
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y * 0.3f, rb.linearVelocity.z);
             }
         }
 
+
+        //turnin
         if (horizontalAmount == 0) 
         {
             Vector3 decayVelocity = rb.linearVelocity;
@@ -121,6 +145,8 @@ public class CharacterController2025 : MonoBehaviour
             Quaternion rotation = Quaternion.Euler(0f, yawRotation, 0f);
             transform.rotation = rotation;
         }
+
+        UpdateAnimation();
     }
 
     IEnumerator ResetTriggerAfterDelay(float delay)
@@ -133,4 +159,12 @@ public class CharacterController2025 : MonoBehaviour
         // Optionally, you can also re-enable the raycast here if needed
         canRaycast = true;
     }
-}
+
+    void UpdateAnimation()
+    {
+        animator.SetFloat("Speed",Mathf.Abs(rb.linearVelocity.x));
+        animator.SetBool("Jumping", !isGrounded);
+    }
+
+
+    }

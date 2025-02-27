@@ -45,6 +45,7 @@ public class LevelParser : MonoBehaviour
     public GameObject waterPrefab;
     public GameObject goalPrefab;
     public GameObject coinPrefab;
+    public GameObject deadZonePrefab;
     public GameObject spawnLocPrefab;
     public Transform spawnTransform;
     public GameObject spawnLoc;
@@ -148,6 +149,12 @@ public class LevelParser : MonoBehaviour
                 {
                     Vector3 pos = new Vector3(col, row, 0f);
                     GameObject newObj = Instantiate(coinPrefab, environmentRoot);
+                    newObj.transform.position = pos;
+                }
+                if (letters[col] == 'd')
+                {
+                    Vector3 pos = new Vector3(col, row, 0f);
+                    GameObject newObj = Instantiate(deadZonePrefab, environmentRoot);
                     newObj.transform.position = pos;
                 }
 

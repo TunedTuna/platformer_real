@@ -11,6 +11,7 @@ TagManager:
   - Water
   - Coin
   - Goal
+  - DeadZone
   layers:
   - Default
   - TransparentFX
